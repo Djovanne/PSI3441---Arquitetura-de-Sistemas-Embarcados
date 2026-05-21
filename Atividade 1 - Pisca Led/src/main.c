@@ -2,11 +2,13 @@
 #include <device.h>             // API  para obter e usar dispositivos
 #include <drivers/gpio.h>       // API para controle de GPIO
 
-#define LED_PORT1       "GPIOB" // Nome do controlador GPIO (label no .pio\build\frdm_kl25z\zephyr\zephyr.dts)
-#define LED_PORT2       "GPIOD" // Nome do controlador GPIO (label no .pio\build\frdm_kl25z\zephyr\zephyr.dts)
+#define PORTB_NODE DT_NODELABEL(gpiob)
+#define PORTD_NODE DT_NODELABEL(gpiod)
+
 #define LEDR_PIN       18       // Pino PTB18 onde está o LED vermelho
 #define LEDG_PIN       19       // Pino PTB18 onde está o LED verde
-#define LEDB_PIN       13       // Pino PTB18 onde está o LED azul
+#define LEDB_PIN       1       // Pino PTB18 onde está o LED azul
+
 #define SLEEP_TIME_MS  500    // Intervalo de piscar (milissegundos)
 
 typedef enum
@@ -21,13 +23,13 @@ LED_State ledstate = LED_RED;
 
 void main(void)
 {
-    const struct device *portR = device_get_binding(LED_PORT1);
-	const struct device *portG = device_get_binding(LED_PORT1);
-	const struct device *portB = device_get_binding(LED_PORT2);
+    const struct device *portR = DEVICE_DT_GET(PORTB_NODE);
+	const struct device *portG = DEVICE_DT_GET(PORTB_NODE);
+	const struct device *portB = DEVICE_DT_GET(PORTD_NODE);
 
-    gpio_pin_configure(portR, LEDR_PIN, GPIO_OUTPUT_ACTIVE);
-	gpio_pin_configure(portG, LEDG_PIN, GPIO_OUTPUT_ACTIVE);
-	gpio_pin_configure(portB, LEDB_PIN, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_configure(portR, LEDR_PIN, GPIO_OUTPUT_INACTIVE | GPIO_ACTIVE_LOW);
+	gpio_pin_configure(portG, LEDG_PIN, GPIO_OUTPUT_INACTIVE | GPIO_ACTIVE_LOW);
+	gpio_pin_configure(portB, LEDB_PIN, GPIO_OUTPUT_INACTIVE | GPIO_ACTIVE_LOW);
     
     while (1) 
 	{
