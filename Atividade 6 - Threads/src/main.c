@@ -56,10 +56,12 @@ void thread_accel_fn(void *arg1, void *arg2, void *arg3)
     {
         // Só tenta ler e imprimir se estiver no Modo Completo
         if (modo_botao) {
-            if (accel_read(&dados_accel)) {
+            if (accel_read(&dados_accel)) 
+            {
                 printk("[ACCEL] X: %.2f | Y: %.2f | Z: %.2f\n", 
                        (double)dados_accel.x, (double)dados_accel.y, (double)dados_accel.z);
-            } else {
+            } else 
+            {
                 printk("[ACCEL] Falha na leitura!\n");
             }
         }
